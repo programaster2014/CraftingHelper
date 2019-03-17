@@ -60,7 +60,7 @@ public class ZehtukaSpire extends BaseRecipe {
 		
 		//this.recipes.put("Zojja's Spire", zojjaSpire);
 		//this.recipes.put("Mordrant Inscription", mordantInscription);
-		//this.recipes.put("Stat Change", statChange);
+		this.recipes.put("Stat Change", statChange);
 		
 		this.order.put(1, 46773);
 		this.order.put(2, 83974);

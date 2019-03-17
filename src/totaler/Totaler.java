@@ -20,8 +20,8 @@ public class Totaler {
 	public HashMap<String, ArrayList<TotalerRow>> calculate(BaseRecipe recipe){
 		HashMap<String, ArrayList<TotalerRow>> tables = new HashMap<>();
 		
-		for(int counter = 1; counter <= recipe.order.size(); counter++){
-			String recipeName = recipe.order.get((Integer)counter);
+		for(Integer counter = 1; counter <= recipe.order.size(); counter++){
+			String recipeName = "";//recipe.order.get(counter);
 			tables.put(recipeName, new ArrayList<>());
 			for(Integer materialID : recipe.recipes.get(recipeName).keySet()){
 				TotalerRow row = new TotalerRow(recipe.recipes.get(recipeName).get(materialID));
@@ -155,7 +155,7 @@ public class Totaler {
 		}
 				
 		for(int counter = 1; counter <= recipe.order.size(); counter++){
-			String recipeName = recipe.order.get((Integer)counter);
+			String recipeName = "";//recipe.order.get((Integer)counter);
 			
 			System.out.println(calculateDashes(longestName) + recipeName + calculateDashes(longestName));
 			System.out.println(calculateSpaces("Material Name", longestName) + calculateSpacesRightAlign("Req.", longestRequirement) + calculateSpacesRightAlign("Have", longestInventory) + calculateSpacesRightAlign("Need", longestInventory));

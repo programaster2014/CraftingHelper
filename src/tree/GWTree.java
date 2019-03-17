@@ -18,7 +18,7 @@ public class GWTree {
 	private Node current;
 	public DataRetriever ret;
 	private TreeMap<String, Integer > table;
-	public HashMap<String, HashMap<Integer, Requirement>> baseElements;
+	public HashMap<Integer, Requirement> baseElements;
 	
 	public GWTree(int id, DataRetriever ret) {
 		Item item = ret.getItemById(id);
@@ -30,6 +30,10 @@ public class GWTree {
 	
 	public void reset() {
 		this.current = this.root;
+	}
+	
+	public String getItemName() {
+		return this.root.getData().name;
 	}
 	
 	public void build() {
@@ -57,7 +61,7 @@ public class GWTree {
 				}
 			}while(!stack.empty());
 			
-			this.getBaseElements(this.root);
+			this.buildBaseElements(this.root);
 		}
 		else {
 			System.out.println("Root is not valid node");
@@ -83,10 +87,11 @@ public class GWTree {
 	
 	public void buildBaseElements(Node node) {
 		if(node.getChildren().isEmpty()) {
-			table.put(node.getData().name, table.getOrDefault(node.getData().name, 0) + node.getTotalCount());
+			this.baseElements.put(node.getData().id, new Requirement(node.getData().name, 
+					baseElements.getOrDefault(node.getData().id, new Requirement(node.getData().name, 0)).number + node.getTotalCount()));
 		}
 		for(Node child : node.getChildren()) {
-			this.getBaseElements(child);
+			this.buildBaseElements(child);
 		}
 	}
 	
