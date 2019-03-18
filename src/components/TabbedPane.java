@@ -35,11 +35,11 @@ public class TabbedPane extends JPanel{
 		c.fill = GridBagConstraints.BOTH;
 		
 		for(Integer tabCounter = 1; tabCounter <= this.recipe.order.size(); tabCounter++){
-			//this.buildLabelTable(table.get(this.recipe.order.get(tabCounter)), this.recipe.order.get(tabCounter));
-			//orderedTabs.put(tabCounter, makeTab(this.recipe.order.get(tabCounter)));
+			this.buildLabelTable(table.get(this.recipe.recipeNames.get(tabCounter)), this.recipe.recipeNames.get(tabCounter));
+			orderedTabs.put(tabCounter, makeTab(this.recipe.recipeNames.get(tabCounter)));
 			
 
-			//tabpane.add(this.recipe.order.get(tabCounter), orderedTabs.get(tabCounter));
+			tabpane.add(this.recipe.recipeNames.get(tabCounter), orderedTabs.get(tabCounter));
 		}
 		
 		add(tabpane, c);

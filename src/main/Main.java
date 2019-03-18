@@ -16,15 +16,14 @@ public class Main {
 	public static void main(String[] args){
 		DataRetriever ret = new DataRetriever();
 		
-		//GWTree tree = new GWTree(46773, ret);
-		//tree.build();
 		
-		//Gui gui = new Gui();
+		Gui gui = new Gui();
 		System.out.println("Preparing......");
 		BaseRecipe recipe = new ZehtukaSpire(ret);
 		recipe.generateRecipe();
-		//Totaler totaler = new Totaler(ret.getAccountInformation());
-		//gui.createGui(totaler.calculate(recipe), recipe);
+		
+		Totaler totaler = new Totaler(ret.getAccountInformation());
+		gui.createGui(totaler.calculate(recipe), recipe);
 
 	}
 }

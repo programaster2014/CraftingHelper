@@ -26,6 +26,7 @@ public class GWTree {
 		this.current = this.root;
 		this.ret = ret;
 		this.table = new TreeMap<>();
+		this.baseElements = new HashMap<>();
 	}
 	
 	public void reset() {

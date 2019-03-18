@@ -70,6 +70,30 @@ public class DataRetriever {
 		
 	}
 	
+	public String getItemNameById(int id) {
+		String itemString = URLConnectionReader(itemURLString + id);
+		
+		if(itemString != null) {
+			if(this.isArray(itemString)) {
+				Item[] itemArray = gson.fromJson(itemString, Item[].class);
+				if(itemArray.length >= 1) {
+					return itemArray[0].name;
+				}
+				return null;
+			}
+			else {
+				Item item = gson.fromJson(itemString, Item.class);
+				return item.name;
+			}
+		}
+		
+		return null;
+	}
+	
+	public boolean isArray(String json) {		
+		return (json.charAt(0) == '[');
+	}
+	
 	public int[] getRecipeList(int id) {
 		String recipeList = URLConnectionReader(recipeOutputURLString + id);
 		

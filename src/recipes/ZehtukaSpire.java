@@ -62,6 +62,8 @@ public class ZehtukaSpire extends BaseRecipe {
 		//this.recipes.put("Mordrant Inscription", mordantInscription);
 		this.recipes.put("Stat Change", statChange);
 		
+		this.recipeNames.put(3, "Stat Change" );
+		
 		this.order.put(1, 46773);
 		this.order.put(2, 83974);
 		this.order.put(3, -999);
