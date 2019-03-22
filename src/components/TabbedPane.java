@@ -13,20 +13,27 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import gwClasses.Account;
+import network.DataRetriever;
 import recipes.BaseRecipe;
+import totaler.Totaler;
 import totaler.TotalerRow;
 
 public class TabbedPane extends JPanel{
 	private static final long serialVersionUID = 3221095184039438004L;
 
 	private HashMap<String, LabelManager> labelTable;
-	private BaseRecipe recipe;
+	public BaseRecipe recipe;
 	private HashMap<Integer, JComponent> orderedTabs;
 	private JTabbedPane tabpane;
+	private Totaler totaler;
+	private DataRetriever ret;
 	
-	public TabbedPane(HashMap<String, ArrayList<TotalerRow>> table, BaseRecipe recipe){
+	public TabbedPane(Totaler totaler, BaseRecipe recipe, DataRetriever ret){
 		super(new GridLayout(1, 1));
 		this.recipe = recipe;
+		this.totaler = totaler;
+		this.ret = ret;
 		labelTable = new HashMap<>();
 		orderedTabs = new HashMap<>();
 		tabpane = new JTabbedPane();
@@ -34,16 +41,61 @@ public class TabbedPane extends JPanel{
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		
-		for(Integer tabCounter = 1; tabCounter <= this.recipe.order.size(); tabCounter++){
-			this.buildLabelTable(table.get(this.recipe.recipeNames.get(tabCounter)), this.recipe.recipeNames.get(tabCounter));
-			orderedTabs.put(tabCounter, makeTab(this.recipe.recipeNames.get(tabCounter)));
-			
-
-			tabpane.add(this.recipe.recipeNames.get(tabCounter), orderedTabs.get(tabCounter));
-		}
+		rebuildTable();
 		
 		add(tabpane, c);
 		tabpane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+	}
+	
+	public void rebuildTable() {
+		Account account = this.ret.getAccountInformation();
+		this.totaler = new Totaler(account);
+		HashMap<String, ArrayList<TotalerRow>> table = this.totaler.calculate(recipe);
+		orderedTabs.clear();
+		tabpane.removeAll();
+		
+		for(Integer tabCounter = 1; tabCounter <= this.recipe.order.size(); tabCounter++){
+			this.buildLabelTable(table.get(this.recipe.recipeNames.get(tabCounter)), this.recipe.recipeNames.get(tabCounter));
+			orderedTabs.put(tabCounter, makeTab(this.recipe.recipeNames.get(tabCounter)));
+			tabpane.add(this.recipe.recipeNames.get(tabCounter), orderedTabs.get(tabCounter));
+		}
+		
+		buildResetTab();
+	}
+	
+	public void rebuildTable(Account account) {
+		this.totaler = new Totaler(account);
+		HashMap<String, ArrayList<TotalerRow>> table = this.totaler.calculate(recipe);
+		orderedTabs.clear();
+		tabpane.removeAll();
+		
+		for(Integer tabCounter = 1; tabCounter <= this.recipe.order.size(); tabCounter++){
+			this.buildLabelTable(table.get(this.recipe.recipeNames.get(tabCounter)), this.recipe.recipeNames.get(tabCounter));
+			orderedTabs.put(tabCounter, makeTab(this.recipe.recipeNames.get(tabCounter)));
+			tabpane.add(this.recipe.recipeNames.get(tabCounter), orderedTabs.get(tabCounter));
+		}
+		
+		buildResetTab();
+	}
+	
+	public void buildResetTab() {
+		JPanel panel = new JPanel(false);
+		panel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1.0;
+		c.weighty = 1.0;
+		c.gridx = 0;
+		c.gridy = 0;
+		JButton button = new JButton();
+		button.setText("Reset");
+		button.setHorizontalAlignment(JLabel.CENTER);
+		button.addActionListener(new ResetListener(this));
+		button.setBorderPainted(false);
+	    button.setOpaque(false);
+	    panel.add(button);
+	    orderedTabs.put(orderedTabs.size() + 1, panel);
+	    tabpane.add("Reset", panel);
 	}
 	
 	public HashMap<String, LabelManager> getLabelTable(){

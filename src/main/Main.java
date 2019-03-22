@@ -1,5 +1,6 @@
 package main;
 
+import gwClasses.Account;
 import network.DataRetriever;
 import recipes.BaseRecipe;
 import recipes.ZehtukaReaver;
@@ -16,6 +17,8 @@ public class Main {
 	
 	public static void main(String[] args){
 		DataRetriever ret = new DataRetriever();
+		Account account = ret.getAccountInformation();
+		Totaler totaler = new Totaler(account);
 		
 		
 		Gui gui = new Gui();
@@ -23,8 +26,11 @@ public class Main {
 		BaseRecipe recipe = new ZehtukaReaver(ret);
 		recipe.generateRecipe();
 		
-		Totaler totaler = new Totaler(ret.getAccountInformation());
-		gui.createGui(totaler.calculate(recipe), recipe);
+		gui.createGui(totaler, recipe, ret);
+		
+		/*while(true) {
+			System.out.println("WAITING..............");
+		}*/
 
 	}
 }

@@ -8,19 +8,21 @@ import javax.swing.JFrame;
 
 import components.LabelManager;
 import components.TabbedPane;
+import network.DataRetriever;
 import recipes.BaseRecipe;
+import totaler.Totaler;
 import totaler.TotalerRow;
 
 public class Gui {
 
 	private TabbedPane tabbedPane;
 	
-	public void createGui(HashMap<String, ArrayList<TotalerRow>> table, BaseRecipe recipe){
+	public void createGui(Totaler totaler, BaseRecipe recipe, DataRetriever ret){
 		JFrame frame = new JFrame(recipe.name);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(450, 700);
 
-		tabbedPane = new TabbedPane(table, recipe);
+		tabbedPane = new TabbedPane(totaler, recipe, ret);
 		frame.add(tabbedPane, BorderLayout.CENTER);
 		frame.setVisible(true);
 	}
