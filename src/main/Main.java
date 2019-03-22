@@ -2,6 +2,7 @@ package main;
 
 import network.DataRetriever;
 import recipes.BaseRecipe;
+import recipes.ZehtukaReaver;
 import recipes.ZehtukaSpire;
 import totaler.Totaler;
 import tree.GWTree;
@@ -19,7 +20,7 @@ public class Main {
 		
 		Gui gui = new Gui();
 		System.out.println("Preparing......");
-		BaseRecipe recipe = new ZehtukaSpire(ret);
+		BaseRecipe recipe = new ZehtukaReaver(ret);
 		recipe.generateRecipe();
 		
 		Totaler totaler = new Totaler(ret.getAccountInformation());
