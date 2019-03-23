@@ -14,6 +14,7 @@ import gwClasses.Requirement;
 import network.DataRetriever;
 
 public class GWTree {
+	public Integer Count;
 	private Node root;
 	private Node current;
 	public DataRetriever ret;
