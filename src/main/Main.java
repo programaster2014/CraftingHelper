@@ -5,13 +5,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import files.FileLoader;
 import gwClasses.Account;
 import network.DataRetriever;
 import recipes.BaseRecipe;
-import recipes.RecipeFactory;
 import thread.AccountCaller;
-import thread.RecipeCaller;
 import totaler.Totaler;
 
 public class Main {
@@ -27,7 +24,7 @@ public class Main {
 		gui.createGui();
 		
 		DataRetriever ret = new DataRetriever();
-		BaseRecipe recipe = RecipeFactory.createInstance(46759, ret);
+		BaseRecipe recipe = new BaseRecipe(ret, 46759);
 
 		System.out.println("Preparing Executors");
 		ExecutorService executor = Executors.newFixedThreadPool(2);

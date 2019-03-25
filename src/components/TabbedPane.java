@@ -7,7 +7,6 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -28,8 +27,6 @@ public class TabbedPane extends JPanel{
 
 	private HashMap<String, LabelManager> labelTable;
 	public BaseRecipe recipe;
-	private HashMap<Integer, JComponent> orderedTabs;
-	private JTabbedPane tabpane;
 	private Totaler totaler;
 	private DataRetriever ret;
 	
@@ -39,67 +36,31 @@ public class TabbedPane extends JPanel{
 		this.totaler = totaler;
 		this.ret = ret;
 		labelTable = new HashMap<>();
-		orderedTabs = new HashMap<>();
-		tabpane = new JTabbedPane();
-		tabpane.setLayout(new GridBagLayout());
+		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		
 		rebuildTable();
-		
-		add(tabpane, c);
-		tabpane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 	}
 	
 	public void rebuildTable() {
 		Account account = this.ret.getAccountInformation();
 		this.totaler = new Totaler(account);
-		HashMap<String, ArrayList<TotalerRow>> table = this.totaler.calculate(recipe);
-		orderedTabs.clear();
-		tabpane.removeAll();
+		ArrayList<TotalerRow> table = this.totaler.calculate(recipe);
+		this.removeAll();
 		
-		for(Integer tabCounter = 1; tabCounter <= this.recipe.order.size(); tabCounter++){
-			this.buildLabelTable(table.get(this.recipe.recipeNames.get(tabCounter)), this.recipe.recipeNames.get(tabCounter));
-			orderedTabs.put(tabCounter, makeTab(this.recipe.recipeNames.get(tabCounter)));
-			tabpane.add(this.recipe.recipeNames.get(tabCounter), orderedTabs.get(tabCounter));
-		}
-		
-		//buildResetTab();
+
+		this.buildLabelTable(table, recipe.name);
+		this.build(this.recipe.name);
 	}
 	
 	public void rebuildTable(Account account) {
 		this.totaler = new Totaler(account);
-		HashMap<String, ArrayList<TotalerRow>> table = this.totaler.calculate(recipe);
-		orderedTabs.clear();
-		tabpane.removeAll();
+		ArrayList<TotalerRow> table = this.totaler.calculate(recipe);
+		this.removeAll();
 		
-		for(Integer tabCounter = 1; tabCounter <= this.recipe.order.size(); tabCounter++){
-			this.buildLabelTable(table.get(this.recipe.recipeNames.get(tabCounter)), this.recipe.recipeNames.get(tabCounter));
-			orderedTabs.put(tabCounter, makeTab(this.recipe.recipeNames.get(tabCounter)));
-			tabpane.add(this.recipe.recipeNames.get(tabCounter), orderedTabs.get(tabCounter));
-		}
-		
-		buildResetTab();
-	}
-	
-	public void buildResetTab() {
-		JPanel panel = new JPanel(false);
-		panel.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.BOTH;
-		c.weightx = 1.0;
-		c.weighty = 1.0;
-		c.gridx = 0;
-		c.gridy = 0;
-		JButton button = new JButton();
-		button.setText("Reset");
-		button.setHorizontalAlignment(JLabel.CENTER);
-		button.addActionListener(new ResetListener(this));
-		button.setBorderPainted(false);
-	    button.setOpaque(false);
-	    panel.add(button);
-	    orderedTabs.put(orderedTabs.size() + 1, panel);
-	    tabpane.add("Reset", panel);
+		this.buildLabelTable(table, recipe.name);
+		this.build(this.recipe.name);
 	}
 	
 	public HashMap<String, LabelManager> getLabelTable(){
@@ -122,6 +83,77 @@ public class TabbedPane extends JPanel{
 			labelTable.get(tabName).silverLabels.put(row.name, createLabel(Integer.toString(row.silver)));
 			labelTable.get(tabName).copperLabels.put(row.name, createLabel(Integer.toString(row.copper)));
 		}
+	}
+	
+	public void build(String tabName) {
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 0.25;
+		c.weighty = 1.0;
+		
+		c.gridx = 0;
+		c.gridy = 0;
+		JLabel name = createLabel("Material Name");
+		name.setForeground(Color.BLUE);
+		this.add(name,  c);
+		
+		c.gridx = 1;
+		c.gridy = 0;
+		JLabel req = createLabel("Req.");
+		req.setForeground(Color.BLUE);
+		this.add(req, c);
+		
+		c.gridx = 2;
+		c.gridy = 0;
+		JLabel have = createLabel("Have");
+		have.setForeground(Color.BLUE);
+		this.add(have, c);
+		
+		c.gridx = 3;
+		c.gridy = 0;
+		JLabel need = createLabel("Need");
+		need.setForeground(Color.BLUE);
+		this.add(need, c);
+		
+		c.gridx = 4;
+		c.gridy = 0;
+		c.gridwidth = 3;
+		JLabel coin = createLabel("Cost");
+		coin.setForeground(Color.BLUE);
+		this.add(coin, c);
+		
+		c.gridwidth = 1;
+        for(JButton button : labelTable.get(tabName).materialNames) {
+        	String materialName = button.getText();
+
+			c.gridx = 0;
+			c.gridy++;
+			this.add(button, c);
+			
+			c.gridx++;
+			this.add(labelTable.get(tabName).requiredLabels.get(materialName), c);
+			
+			c.gridx++;
+			this.add(labelTable.get(tabName).haveLabels.get(materialName), c);
+			
+			c.gridx++;
+			this.add(labelTable.get(tabName).needLabels.get(materialName), c);
+			
+			c.gridx++;
+			CoinPanel coinPanel = new CoinPanel(
+					labelTable.get(tabName).goldLabels.get(materialName).getText(),
+					labelTable.get(tabName).silverLabels.get(materialName).getText(),
+					labelTable.get(tabName).copperLabels.get(materialName).getText()
+			);
+			coinPanel.build();
+			this.add(coinPanel, c);
+        }
+        
+        c.gridy++;
+        CoinPanel coinPanel = new CoinPanel(this.totaler.totalCost);
+        coinPanel.build();
+        this.add(coinPanel, c); 
 	}
 	
 	public JComponent makeTab(String tabName){
