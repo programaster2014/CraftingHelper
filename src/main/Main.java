@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import files.FileLoader;
 import gwClasses.Account;
 import network.DataRetriever;
 import recipes.BaseRecipe;
@@ -21,6 +22,7 @@ public class Main {
 	
 	
 	public static void main(String[] args){
+	
 		Gui gui = new Gui();
 		gui.createGui();
 		
@@ -65,10 +67,6 @@ public class Main {
 				}
 			}
 		}
-		
-		
-		
-		
 
 	}
 }

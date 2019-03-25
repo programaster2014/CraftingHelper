@@ -33,7 +33,10 @@ public class DataRetriever {
 	private Gson gson;
 	
 	public DataRetriever() {
-		this.data = FileLoader.getData();
+		FileLoader loader = new FileLoader();
+		this.data = loader.retreiveData();
+		
+		//this.data = FileLoader.getData();
 		this.gson = new Gson();
 	}
 	
