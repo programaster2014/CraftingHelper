@@ -23,7 +23,7 @@ public class GWTree {
 	
 	public GWTree(int id, DataRetriever ret) {
 		Item item = ret.getItemById(id);
-		this.root = new Node(item, 1, 1);
+		this.root = new Node(item, 1, 1, 0);
 		this.current = this.root;
 		this.ret = ret;
 		this.table = new TreeMap<>();
@@ -52,8 +52,12 @@ public class GWTree {
 						if(recipe != null && !recipe.ingredients.isEmpty()) {		
 							for(Ingredient ingredient : recipe.ingredients) {
 								Item item = ret.getItemById(ingredient.item_id);
+								int coin = 0;
+								if(!item.flags.contains("AccountBound")) {
+									coin = ret.getPriceById(ingredient.item_id);									
+								}
 								if(item != null) {
-									Node node = new Node(item, ingredient.count, this.current.getTotalCount());
+									Node node = new Node(item, ingredient.count, this.current.getTotalCount(), coin);
 									this.current.addChild(node);
 									stack.push(node);
 								}

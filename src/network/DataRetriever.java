@@ -18,6 +18,7 @@ import gwClasses.Account;
 import gwClasses.GW2Character;
 import gwClasses.Item;
 import gwClasses.Material;
+import gwClasses.Price;
 import gwClasses.Recipe;
 import inventory.Inventory;
 
@@ -28,6 +29,7 @@ public class DataRetriever {
 	private static final String recipeOutputURLString = "https://api.guildwars2.com/v2/recipes/search?output=";
 	private static final String itemURLString = "https://api.guildwars2.com/v2/items?ids=";
 	private static final String recipeURLString = "https://api.guildwars2.com/v2/recipes?ids=";
+	private static final String coinURLString = "https://api.guildwars2.com/v2/commerce/prices";
 	
 	private Data data;
 	private Gson gson;
@@ -88,6 +90,26 @@ public class DataRetriever {
 		}
 		
 		return null;
+	}
+	
+	public int getPriceById(int id) {
+		String priceString = URLConnectionReader(coinURLString + id);
+		
+		if(priceString != null) {
+			if(this.isArray(priceString)) {
+				Price[] priceArray = gson.fromJson(priceString, Price[].class);
+				if(priceArray.length >= 1) {
+					return priceArray[0].sells.unit_price;
+				}
+				return -1;
+			}
+			else {
+				Price price = gson.fromJson(priceString, Price.class);
+				return price.sells.unit_price;
+			}
+		}
+		
+		return -1;
 	}
 	
 	public boolean isArray(String json) {		

@@ -7,6 +7,9 @@ public class TotalerRow {
 	public int required;
 	public int have;
 	public String completed;
+	public int gold;
+	public int silver;
+	public int copper;
 	
 	public TotalerRow(Requirement r){
 		this.name = r.materialName;

@@ -6,15 +6,17 @@ import gwClasses.Item;
 
 public class Node {
 	private Item data;
+	private int coin;
 	private int count;
 	private int totalCount;
 	private ArrayList<Node> children;
 	
-	public Node(Item data, int count, int parentCount) {
+	public Node(Item data, int count, int parentCount, int coin) {
 		this.data = data;
 		this.count = count;
 		this.totalCount = this.count * parentCount;
 		this.children = new ArrayList<Node>();
+		this.coin = coin;
 	}
 	
 	public void addChild(Node child) {
