@@ -67,15 +67,6 @@ public class BaseRecipe {
 		}
 		
 		executor.shutdown();
-		/*
-		for(Integer count = 1; count <= order.size(); count++) {
-			if(!(order.get(count) == -999)) {
-				GWTree tree = new GWTree(order.get(count), ret);
-				tree.build();
-				recipeNames.put(count, ret.getItemNameById(order.get(count)));
-				recipes.put(tree.getItemName(), tree.baseElements);
-				progress.setValue(progress.getValue() + step);
-			}
-		}*/
+
 	}
 }

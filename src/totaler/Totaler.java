@@ -12,9 +12,11 @@ import recipes.BaseRecipe;
 
 public class Totaler {
 	public Account account;
+	public int totalCost;
 	
 	public Totaler(Account account){
 		this.account = account;
+		this.totalCost = 0;
 	}
 	
 	public HashMap<String, ArrayList<TotalerRow>> calculate(BaseRecipe recipe){
@@ -33,6 +35,7 @@ public class Totaler {
 				}
 				else{
 					row.completed = Integer.toString(row.required - row.have);
+					totalCost += (recipe.recipes.get(recipeName).get(materialID).coin * (row.required - row.have));
 				}
 
 				tables.get(recipeName).add(row);

@@ -29,7 +29,7 @@ public class DataRetriever {
 	private static final String recipeOutputURLString = "https://api.guildwars2.com/v2/recipes/search?output=";
 	private static final String itemURLString = "https://api.guildwars2.com/v2/items?ids=";
 	private static final String recipeURLString = "https://api.guildwars2.com/v2/recipes?ids=";
-	private static final String coinURLString = "https://api.guildwars2.com/v2/commerce/prices";
+	private static final String coinURLString = "https://api.guildwars2.com/v2/commerce/prices/";
 	
 	private Data data;
 	private Gson gson;

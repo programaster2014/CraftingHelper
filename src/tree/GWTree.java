@@ -93,8 +93,9 @@ public class GWTree {
 	
 	public void buildBaseElements(Node node) {
 		if(node.getChildren().isEmpty()) {
-			this.baseElements.put(node.getData().id, new Requirement(node.getData().name, 
-					baseElements.getOrDefault(node.getData().id, new Requirement(node.getData().name, 0)).number + node.getTotalCount()));
+			Requirement reqDefault = new Requirement(node.getData().name, 0, node.getCoin());
+			int updatedCount = baseElements.getOrDefault(node.getData().id, reqDefault).number + node.getTotalCount();
+			this.baseElements.put(node.getData().id, new Requirement(node.getData().name, updatedCount, node.getCoin()));
 		}
 		for(Node child : node.getChildren()) {
 			this.buildBaseElements(child);

@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -21,6 +22,9 @@ import totaler.TotalerRow;
 
 public class TabbedPane extends JPanel{
 	private static final long serialVersionUID = 3221095184039438004L;
+	public static String goldIcon = "https://wiki.guildwars2.com/images/d/d1/Gold_coin.png";
+	public static String silverIcon = "https://wiki.guildwars2.com/images/3/3c/Silver_coin.png";
+	public static String copperIcon = "https://wiki.guildwars2.com/images/e/eb/Copper_coin.png";
 
 	private HashMap<String, LabelManager> labelTable;
 	public BaseRecipe recipe;
@@ -60,7 +64,7 @@ public class TabbedPane extends JPanel{
 			tabpane.add(this.recipe.recipeNames.get(tabCounter), orderedTabs.get(tabCounter));
 		}
 		
-		buildResetTab();
+		//buildResetTab();
 	}
 	
 	public void rebuildTable(Account account) {
@@ -111,9 +115,12 @@ public class TabbedPane extends JPanel{
 			}
 			
 			labelTable.get(tabName).materialNames.add(createButton(row.name));
-			labelTable.get(tabName).requiredLabels.put(row.name, createLabel(Integer.toString(row.required), false));
-			labelTable.get(tabName).haveLabels.put(row.name, createLabel(Integer.toString(row.have), false));
+			labelTable.get(tabName).requiredLabels.put(row.name, createLabel(Integer.toString(row.required)));
+			labelTable.get(tabName).haveLabels.put(row.name, createLabel(Integer.toString(row.have)));
 			labelTable.get(tabName).needLabels.put(row.name, createLabel(row.completed, red));
+			labelTable.get(tabName).goldLabels.put(row.name, createLabel(Integer.toString(row.gold)));
+			labelTable.get(tabName).silverLabels.put(row.name, createLabel(Integer.toString(row.silver)));
+			labelTable.get(tabName).copperLabels.put(row.name, createLabel(Integer.toString(row.copper)));
 		}
 	}
 	
@@ -127,28 +134,36 @@ public class TabbedPane extends JPanel{
 		
 		c.gridx = 0;
 		c.gridy = 0;
-		JLabel name = createLabel("Material Name", false);
+		JLabel name = createLabel("Material Name");
 		name.setForeground(Color.BLUE);
 		panel.add(name,  c);
 		
 		c.gridx = 1;
 		c.gridy = 0;
-		JLabel req = createLabel("Req.", false);
+		JLabel req = createLabel("Req.");
 		req.setForeground(Color.BLUE);
 		panel.add(req, c);
 		
 		c.gridx = 2;
 		c.gridy = 0;
-		JLabel have = createLabel("Have", false);
+		JLabel have = createLabel("Have");
 		have.setForeground(Color.BLUE);
 		panel.add(have, c);
 		
 		c.gridx = 3;
 		c.gridy = 0;
-		JLabel need = createLabel("Need", false);
+		JLabel need = createLabel("Need");
 		need.setForeground(Color.BLUE);
 		panel.add(need, c);
 		
+		c.gridx = 4;
+		c.gridy = 0;
+		c.gridwidth = 3;
+		JLabel coin = createLabel("Cost");
+		coin.setForeground(Color.BLUE);
+		panel.add(coin, c);
+		
+		c.gridwidth = 1;
         for(JButton button : labelTable.get(tabName).materialNames) {
         	String materialName = button.getText();
 
@@ -164,7 +179,21 @@ public class TabbedPane extends JPanel{
 			
 			c.gridx++;
 			panel.add(labelTable.get(tabName).needLabels.get(materialName), c);
+			
+			c.gridx++;
+			CoinPanel coinPanel = new CoinPanel(
+					labelTable.get(tabName).goldLabels.get(materialName).getText(),
+					labelTable.get(tabName).silverLabels.get(materialName).getText(),
+					labelTable.get(tabName).copperLabels.get(materialName).getText()
+			);
+			coinPanel.build();
+			panel.add(coinPanel, c);
         }
+        
+        c.gridy++;
+        CoinPanel coinPanel = new CoinPanel(this.totaler.totalCost);
+        coinPanel.build();
+        panel.add(coinPanel, c);        
 		
         return panel; 
 	}
@@ -189,6 +218,12 @@ public class TabbedPane extends JPanel{
 		}
 		
 		return label;
-	}
+	}	
 	
+	public JLabel createLabel(String s){
+		JLabel label = new JLabel(s);
+		label.setHorizontalAlignment(JLabel.CENTER);
+		
+		return label;
+	}	
 }

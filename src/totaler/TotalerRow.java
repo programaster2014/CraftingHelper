@@ -14,5 +14,19 @@ public class TotalerRow {
 	public TotalerRow(Requirement r){
 		this.name = r.materialName;
 		this.required = r.number;
+		
+		if(r.coin != -1) {
+			int coin = r.coin;
+
+			//copper logic
+			this.copper = coin%100;
+			
+			//silver logic
+			this.silver = ((coin - this.copper)%10000)/100;
+			
+			//gold logic
+			this.gold = (coin - this.copper - this.silver)/10000;
+			
+		}
 	}
 }

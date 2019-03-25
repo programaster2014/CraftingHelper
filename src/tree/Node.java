@@ -19,6 +19,10 @@ public class Node {
 		this.coin = coin;
 	}
 	
+	public int getCoin() {
+		return this.coin;
+	}
+	
 	public void addChild(Node child) {
 		this.children.add(child);
 	}

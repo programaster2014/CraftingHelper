@@ -14,8 +14,7 @@ import network.DataRetriever;
 import recipes.BaseRecipe;
 import totaler.Totaler;
 
-public class Gui {
-
+public class Gui {	
 	private TabbedPane tabbedPane;
 	private JFrame frame;
 	private JLabel loading;
@@ -25,7 +24,7 @@ public class Gui {
 	public Gui() {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(450, 700);
+		frame.setSize(550, 700);
 	}
 	
 	public JProgressBar getProgressBar() {
